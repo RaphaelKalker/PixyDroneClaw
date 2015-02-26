@@ -216,9 +216,9 @@ boolean isObjectInRange(Block block) {
 
   if (block.x > TARGET_X1 && block.x < TARGET_X1 + block.width
       && block.y > TARGET_Y1 && block.y < TARGET_Y1 + block.height) {
-    char buffalo[64];
-    sprintf(buffalo, "Object is centered -> xLeft: %d, xRight: %d, yTop: %d, yBottom: %d",
-            block.x, block.x + block.width, block.y, block.y + block.height);
+    char buffalo[128];
+    sprintf(buffalo, "Object is centered -> Sig: %d, xLeft: %d, xRight: %d, yTop: %d, yBottom: %d",
+            block.signature, block.x, block.x + block.width, block.y, block.y + block.height);
     Serial.println(buffalo);
     return true;
   }
@@ -232,6 +232,7 @@ boolean readyToScan() {
 
 //pixy.setLED(r,g,b)
 //pixy.setBrightness()
+
 
 
 
