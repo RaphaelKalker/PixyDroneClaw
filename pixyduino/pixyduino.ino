@@ -142,11 +142,11 @@ Pixy pixy;
 Claw claw;
 
 int timer = 1000;
-const uint8_t frames = 10;
+const uint8_t frames = 25;
 uint16_t blocks;
 uint8_t len;
 int i = 0;
-uint8_t btnPin = 1;
+uint8_t btnPin = 13;
 
 Signature *sig1;
 Signature *sig2;
@@ -232,5 +232,6 @@ boolean readyToScan() {
 
 //pixy.setLED(r,g,b)
 //pixy.setBrightness()
+
 
 
