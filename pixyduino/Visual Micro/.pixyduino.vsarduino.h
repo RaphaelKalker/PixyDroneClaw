@@ -87,6 +87,4 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <Detection.h>
 #include <Signature.cpp>
 #include <Signature.h>
-#include <Test.cpp>
-#include <Test.h>
 #endif
