@@ -48,3 +48,7 @@ pixyduino/pixyduino.v12.suo
 pixyduino/Visual Micro/Upload.vmps.xml
 *.xml
 pixyduino/Visual Micro/.pixyduino.vsarduino.h
+pixyduino/Visual Micro/Upload.vmps.xml
+*.xml
+pixyduino/Visual Micro/.pixyduino.vsarduino.h
+*.sdf
