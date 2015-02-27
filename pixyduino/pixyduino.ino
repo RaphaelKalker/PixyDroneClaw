@@ -1,16 +1,10 @@
-
-#include "Detection.h"
 #include <SPI.h>
 #include <Pixy.h>
 #include <Servo.h>
 #include "Signature.h"
 #include "Claw.h"
+#include "Detection.h"
 
-
-//Shape
-
-
-//Some needed vars
 Pixy pixy;
 Claw claw;
 Servo servo;
@@ -19,15 +13,14 @@ int timer = 1000;
 const uint8_t frames = 25;
 uint16_t blocks;
 uint8_t len;
-int i = 0;
-uint8_t btnPin = 13;
 
 void setup() {
   Serial.begin(9600);
-  Serial.print("Starting pixy\n");
   
   pixy.init();
   claw.initClaw();
+
+  Serial.println("Start detection... \n");
 }
 
 void loop() {
@@ -37,8 +30,7 @@ void loop() {
   len = sizeof(blocks);
   char buf[32];
 
-  if (blocks && Detection::isReadyToScan()) {
-
+  if (blocks && claw.isReady()) {
     if (++i % frames == 0) {
       sprintf(buf, "Detected %d objects: \n", blocks);
       Serial.print(buf);
@@ -49,7 +41,7 @@ void loop() {
         Serial.print(buf);
         pixy.blocks[j].print();
 
-        //confirm target based on centered object and size
+        //confirm target based on some thresholds
         if (Detection::isObjectInRange(pixy.blocks[j])) {
 			Serial.println("Object is in range");
 			claw.engage();
@@ -58,16 +50,16 @@ void loop() {
       }
     }
   }
+  else {
+	 
+	  
+  }
 
   /*
   * get current block on screen and create a signature for comparison later
   */
+  //TODO
   }
-
-
-
-
-
 
 //pixy.setLED(r,g,b)
 //pixy.setBrightness()

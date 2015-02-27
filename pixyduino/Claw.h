@@ -11,10 +11,24 @@
 class Claw
 {
 	private:
-		const uint8_t motorPin = 10;
+		const uint8_t motorPin = 9;
 		const uint8_t motorPinClose = 6;
 		boolean test = false;
-		Servo servo;
+		Servo servo1;
+
+		enum ServoPosition {
+			position1 = 100,
+			position2 = 160,
+			position3 = 110,
+			defaultPosition = 180
+
+		};
+
+		enum ServoPin {
+			pin1 = 4,
+			pin2 = 5,
+			pin3 = 6
+		};
 		
 	 public:
 		 enum State {
@@ -25,18 +39,16 @@ class Claw
 			 UNKNOWN
 		 };
 
-		static State state;
+		State state;
 	 
 		void initClaw();
-		static void setState(Claw::State s);
-		static Claw::State getState();
-		
+		void setState(Claw::State s);
+		Claw::State getState();
 		boolean engage();
 		boolean openClaw();
 		boolean closeClaw();
+		boolean isReady();
 };
-
-
 #endif
 
 

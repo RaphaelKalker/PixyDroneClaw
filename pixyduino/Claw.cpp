@@ -10,7 +10,7 @@
 		/*
 		Setup the servo motor here
 		*/
-
+		servo1.attach(Claw::pin1);
 	}
 
 	Claw::State Claw::getState() {
@@ -23,19 +23,19 @@
 
 	boolean Claw::engage() {
 		Serial.println("Engaging claw of fury....");
-		//Claw::state = OPENING;
-		//try to open claw if successful we should clench onto object
-		if (openClaw()) {
-
-			//this will delay until open, best to have fallback
-			closeClaw();
+		
+		//try to close claw if successful we shall proceed
+		if (closeClaw()) {
+			//switch off camera/conserve power?
 
 			//reset the whole thing
+			openClaw();
 			delay(1000);
 			initClaw();
 		}
 		else {
-			Serial.print("FAILURE");
+			Serial.print("could not close claw.");
+			setState(UNKNOWN);
 		}
 		return true;
 	}
@@ -47,21 +47,25 @@
 
 	boolean Claw::openClaw() {
 		if (test) {
-			//state = OPEN;
+			setState(OPEN);
 			return false;
 		}
+		//check if we can actually open
+
 		Serial.println("Opening claw...");
-		//setState(OPENING);
-		//digitalWrite(motorPin, HIGH);
+		setState(OPENING);
+		digitalWrite(motorPin, HIGH);
 		delay(1000);
 		digitalWrite(motorPin, LOW);
-		//setState(OPEN);
+		setState(OPEN);
 
-		/*if (state == OPEN) {
-			return true;
-		}*/
+		//maybe it failed? we should handle that
+		if (state != OPEN) {
+			setState(UNKNOWN);
+			return false;
+		}
 
-		return false;
+		return true;
 	}
 
 	boolean Claw::closeClaw() {
@@ -69,16 +73,25 @@
 			return true;
 		}
 
+		//Add servo logic here
+		servo1.write(Claw::position1);
+		delay(10*1000);
+		servo1.write(defaultPosition);
+
 		Serial.println("Closing claw...");
-		//state = CLOSING;
+		state = CLOSING;
 		digitalWrite(motorPinClose, HIGH);
 		delay(1000);
-		//state = CLOSED;
+		state = CLOSED;
 		digitalWrite(motorPinClose, LOW);
 
-		//if (state == CLOSED) {
-		//	return true;
-		//}
+		if (state == CLOSED) {
+			return true;
+		}
 
 		return false;
+	}
+
+	boolean Claw::isReady() {
+		return state == OPEN;
 	}

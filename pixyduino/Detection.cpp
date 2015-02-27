@@ -7,6 +7,7 @@
 		/*
 		* check if item is centered based on the some target thresholds for the object's size
 		* this should ignore false positives for objects of the wrong size
+		*play around with the target values
 		*/
 
 		if (block.x > TARGET_X1 && block.x < TARGET_X1 + block.width
@@ -19,10 +20,5 @@
 		}
 		return false;
 		//  return block.width > targetWidth || block.height > targetHeight;
-	}
-
-
-	boolean Detection::isReadyToScan(){
-		return 9 == Claw::OPEN;
 	}
 
