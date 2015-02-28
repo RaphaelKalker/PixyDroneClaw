@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Servo.h>
 #include "Claw.h"	
+#include "ContinuousRotationServo.h"
 
 	void Claw::initClaw() {
 		Serial.println("Initializing Claw!");

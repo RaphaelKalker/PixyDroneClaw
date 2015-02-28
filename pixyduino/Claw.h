@@ -4,6 +4,7 @@
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "Arduino.h"
 	#include <Servo.h>
+	#include "ContinuousRotationServo.h"
 #else
 	#include "WProgram.h"
 #endif
