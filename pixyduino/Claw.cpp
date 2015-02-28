@@ -11,6 +11,9 @@
 		Setup the servo motor here
 		*/
 		servo1.attach(Claw::pin1);
+                servo2.begin(pin2);
+                servo3.begin(pin3);
+
 	}
 
 	Claw::State Claw::getState() {
@@ -26,6 +29,13 @@
 		
                 //claw servo
                 servo1.write(Claw::position3);
+
+                //spyder servo
+                servo2.rotate(Claw::spyderClose);
+
+                //jordan servo
+                servo3.rotate(Claw::jordanClose);
+
 		//try to close claw if successful we shall proceed
 		if (closeClaw()) {
 			//switch off camera/conserve power?
