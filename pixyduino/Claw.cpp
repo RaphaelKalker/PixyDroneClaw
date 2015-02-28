@@ -24,6 +24,8 @@
 	boolean Claw::engage() {
 		Serial.println("Engaging claw of fury....");
 		
+                //claw servo
+                servo1.write(Claw::position3);
 		//try to close claw if successful we shall proceed
 		if (closeClaw()) {
 			//switch off camera/conserve power?
