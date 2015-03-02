@@ -17,7 +17,7 @@ class Claw
 		boolean test = false;
 		Servo servo1;
                 ContinuousRotationServo servo2;
-                ContinuousRotationServo servo3;
+                Servo servo3;
 
 		enum ServoPosition {
 			position1 = 100,
@@ -25,13 +25,13 @@ class Claw
 			position3 = 110,
 			defaultPosition = 180,
                         spyderClose = 100,
-                        jordanClose = 100
+                        jordanClose = 180
 		};
 
 		enum ServoPin {
-			pin1 = 4,
-			pin2 = 5,
-			pin3 = 6
+			pin10 = 10,
+			pin2 = 2,
+			pin9 = 9
 		};
 		
 	 public:

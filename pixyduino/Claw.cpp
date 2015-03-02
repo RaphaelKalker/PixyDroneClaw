@@ -11,10 +11,10 @@
 		/*
 		Setup the servo motor here
 		*/
-		servo1.attach(pin1);
-                servo2.begin(pin2);
-                servo3.begin(pin3);
 
+		servo1.attach(pin9);
+        servo2.begin(pin2);
+		servo3.attach(pin10);
 	}
 
 	Claw::State Claw::getState() {
@@ -77,14 +77,14 @@
 			return true;
 		}
 
-                //claw servo
-                servo1.write(position3);
+        //claw servo
+        servo1.write(position3);
 
-                //spyder servo
-                servo2.rotate(spyderClose);
+        //spyder servo
+        servo2.rotate(spyderClose);
 
-                //jordan servo
-                servo3.rotate(jordanClose);
+        //jordan servo
+        servo3.write(jordanClose);
 
 		Serial.println("Closing claw...");
 		state = CLOSING;
