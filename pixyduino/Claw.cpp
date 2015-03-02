@@ -11,9 +11,9 @@
 		/*
 		Setup the servo motor here
 		*/
-		servo1.attach(Claw::pin1);
-                servo2.begin(pin2);
-                servo3.begin(pin3);
+		servo1.attach(Claw::pin9);
+                servo2.begin(Claw::pin2);
+		servo3.attach(Claw::pin10);
 
 	}
 
@@ -35,7 +35,7 @@
                 servo2.rotate(Claw::spyderClose);
 
                 //jordan servo
-                servo3.rotate(Claw::jordanClose);
+                servo3.write(Claw::jordanClose);
 
 		//try to close claw if successful we shall proceed
 		if (closeClaw()) {
