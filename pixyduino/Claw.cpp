@@ -11,7 +11,7 @@
 		/*
 		Setup the servo motor here
 		*/
-		servo1.attach(Claw::pin1);
+		servo1.attach(pin1);
                 servo2.begin(pin2);
                 servo3.begin(pin3);
 
@@ -27,15 +27,6 @@
 
 	boolean Claw::engage() {
 		Serial.println("Engaging claw of fury....");
-		
-                //claw servo
-                servo1.write(Claw::position3);
-
-                //spyder servo
-                servo2.rotate(Claw::spyderClose);
-
-                //jordan servo
-                servo3.rotate(Claw::jordanClose);
 
 		//try to close claw if successful we shall proceed
 		if (closeClaw()) {
@@ -86,10 +77,14 @@
 			return true;
 		}
 
-		//Add servo logic here
-		servo1.write(Claw::position1);
-		delay(10*1000);
-		servo1.write(defaultPosition);
+                //claw servo
+                servo1.write(position3);
+
+                //spyder servo
+                servo2.rotate(spyderClose);
+
+                //jordan servo
+                servo3.rotate(jordanClose);
 
 		Serial.println("Closing claw...");
 		state = CLOSING;
