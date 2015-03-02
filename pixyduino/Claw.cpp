@@ -27,15 +27,6 @@
 
 	boolean Claw::engage() {
 		Serial.println("Engaging claw of fury....");
-		
-                //claw servo
-                servo1.write(position3);
-
-                //spyder servo
-                servo2.rotate(spyderClose);
-
-                //jordan servo
-                servo3.write(jordanClose);
 
 		//try to close claw if successful we shall proceed
 		if (closeClaw()) {
