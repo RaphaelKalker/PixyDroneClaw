@@ -51,7 +51,11 @@ void loop() {
     }
   }
   else {
-	 
+	  if (claw.getState() == claw.OPEN)
+	  {
+		  Serial.println("did not go to loop");
+	  }
+	  
 	  
   }
 
