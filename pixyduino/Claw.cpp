@@ -11,9 +11,9 @@
 		/*
 		Setup the servo motor here
 		*/
-		servo1.attach(Claw::pin9);
-                servo2.begin(Claw::pin2);
-		servo3.attach(Claw::pin10);
+		servo1.attach(pin9);
+                servo2.begin(pin2);
+		servo3.attach(pin10);
 
 	}
 
@@ -29,13 +29,13 @@
 		Serial.println("Engaging claw of fury....");
 		
                 //claw servo
-                servo1.write(Claw::position3);
+                servo1.write(position3);
 
                 //spyder servo
-                servo2.rotate(Claw::spyderClose);
+                servo2.rotate(spyderClose);
 
                 //jordan servo
-                servo3.write(Claw::jordanClose);
+                servo3.write(jordanClose);
 
 		//try to close claw if successful we shall proceed
 		if (closeClaw()) {
