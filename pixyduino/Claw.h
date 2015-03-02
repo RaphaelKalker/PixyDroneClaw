@@ -25,7 +25,7 @@ class Claw
 			position3 = 110,
 			defaultPosition = 180,
                         spyderClose = 100,
-                        jordanClose = 100
+                        jordanClose = 180
 		};
 
 		enum ServoPin {
