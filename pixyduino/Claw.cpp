@@ -5,16 +5,12 @@
 
 	void Claw::initClaw() {
 		Serial.println("Initializing Claw!");
-		pinMode(motorPin, OUTPUT);
-		pinMode(motorPinClose, OUTPUT);
 
 		/*
 		Setup the servo motor here
 		*/
 
-		servo1.attach(pin9);
-        servo2.begin(pin2);
-		servo3.attach(pin10);
+		servo1.begin(pin9);
 	}
 
 	Claw::State Claw::getState() {
@@ -58,9 +54,7 @@
 
 		Serial.println("Opening claw...");
 		setState(OPENING);
-		digitalWrite(motorPin, HIGH);
 		delay(1000);
-		digitalWrite(motorPin, LOW);
 		setState(OPEN);
 
 		//maybe it failed? we should handle that
@@ -77,21 +71,18 @@
 			return true;
 		}
 
-        //claw servo
-        servo1.write(position3);
-
-        //spyder servo
-        servo2.rotate(spyderClose);
-
-        //jordan servo
-        servo3.write(jordanClose);
-
 		Serial.println("Closing claw...");
 		state = CLOSING;
-		digitalWrite(motorPinClose, HIGH);
+
+		for (int i = 0; i < 100; i++)
+		{
+			servo1.rotateLeft(100);
+			delay(5);
+		}
+
 		delay(1000);
+
 		state = CLOSED;
-		digitalWrite(motorPinClose, LOW);
 
 		if (state == CLOSED) {
 			return true;

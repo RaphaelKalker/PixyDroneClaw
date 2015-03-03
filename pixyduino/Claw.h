@@ -12,21 +12,8 @@
 class Claw
 {
 	private:
-		const uint8_t motorPin = 9;
-		const uint8_t motorPinClose = 6;
 		boolean test = false;
-		Servo servo1;
-                ContinuousRotationServo servo2;
-                Servo servo3;
-
-		enum ServoPosition {
-			position1 = 100,
-			position2 = 160,
-			position3 = 110,
-			defaultPosition = 180,
-                        spyderClose = 100,
-                        jordanClose = 180
-		};
+		ContinuousRotationServo servo1;
 
 		enum ServoPin {
 			pin10 = 10,
