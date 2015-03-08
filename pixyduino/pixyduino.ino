@@ -19,6 +19,7 @@ void setup() {
   
   pixy.init();
   claw.initClaw();
+  claw.testClaw(Claw::OPEN);
 
   Serial.println("Start detection... \n");
 }
@@ -29,6 +30,10 @@ void loop() {
   blocks = pixy.getBlocks();
   len = sizeof(blocks);
   char buf[32];
+
+  Detection::handleBtnPressed(2);
+//  Detection::handlePixyBlocks();
+
 
   if (blocks && claw.isReady()) {
     if (++i % frames == 0) {
@@ -60,10 +65,6 @@ void loop() {
   */
   //TODO
   }
-
-//pixy.setLED(r,g,b)
-//pixy.setBrightness()
-
 
 
 
