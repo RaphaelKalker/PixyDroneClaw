@@ -1,7 +1,7 @@
 #include "Detection.h"
 #include "Claw.h"
-
-
+//
+//
 	boolean Detection::isObjectInRange(Block block) {
 
 		/*
@@ -21,4 +21,44 @@
 		return false;
 		//  return block.width > targetWidth || block.height > targetHeight;
 	}
-
+//
+//	void Detection::handlePixyBlocks() {
+//
+//		static int i = 0;
+//		blocks = pixy.getBlocks();
+//		len = sizeof(blocks);
+//		char buf[32];
+//
+//		if (blocks && claw.isReady()) {
+//			if (++i % frames == 0) {
+//				sprintf(buf, "Detected %d objects: \n", blocks);
+//				Serial.print(buf);
+//
+//				//Print Informations about detected objects
+//				for (int j = 0; j < blocks; j++) {
+//					sprintf(buf, " block %d: ", j);
+//					Serial.print(buf);
+//					pixy.blocks[j].print();
+//
+//					//confirm target based on some thresholds
+//					if (Detection::isObjectInRange(pixy.blocks[j])) {
+//						Serial.println("Object is in range");
+//						claw.engage();
+//						Serial.println("done");
+//					}
+//				}
+//			}
+//		} else {
+//
+//
+//		}
+//	}
+//
+	void Detection::handleBtnPressed(uint8_t btnPin) {
+		if (digitalRead(btnPin) == HIGH) {
+			Serial.println("Pressed");
+		}
+	}
+//
+//
+//
