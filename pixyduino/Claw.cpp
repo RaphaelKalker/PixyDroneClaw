@@ -10,7 +10,10 @@
 		Setup the servo motor here
 		*/
 
-		servo1.begin(pin9);
+//		servoContinuous.begin(10);
+		servoRotational.attach(9);
+//		servoRotational
+		
 	}
 
 	Claw::State Claw::getState() {
@@ -74,11 +77,11 @@
 		Serial.println("Closing claw...");
 		state = CLOSING;
 
-		for (int i = 0; i < 100; i++)
-		{
-			servo1.rotateLeft(100);
-			delay(5);
-		}
+//		for (int i = 0; i < 100; i++)
+//		{
+//			servoContinuous.rotateLeft(100);
+//			servoContinuous.delayServo(20); //expects new instructions after 20 microsends
+//		}
 
 		delay(1000);
 
@@ -93,4 +96,21 @@
 
 	boolean Claw::isReady() {
 		return state == OPEN;
+	}
+
+	void Claw::testClaw(State desiredState)
+	{
+		if (servoRotational.attached())
+		{
+			Serial.println("You should have fucking opened the claw");
+			delay(2000);
+//			servoRotational.write(0);
+
+		}
+//		for (int i = 0; i < 100; i++)
+//		{
+//			servoContinuous.rotateLeft(i);
+//			delay(20);
+//		}
+
 	}

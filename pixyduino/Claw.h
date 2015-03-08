@@ -13,7 +13,8 @@ class Claw
 {
 	private:
 		boolean test = false;
-		ContinuousRotationServo servo1;
+		ContinuousRotationServo servoContinuous;
+		Servo servoRotational;
 
 		enum ServoPin {
 			pin10 = 10,
@@ -39,6 +40,7 @@ class Claw
 		boolean openClaw();
 		boolean closeClaw();
 		boolean isReady();
+		void testClaw(State desiredState);
 };
 #endif
 
