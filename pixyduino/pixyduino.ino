@@ -1,13 +1,16 @@
+#include "UltraSonicSensor.h"
 #include <SPI.h>
 #include <Pixy.h>
 #include <Servo.h>
 #include "Signature.h"
 #include "Claw.h"
 #include "Detection.h"
+#include "UltraSonicSensor.h"
 
 Pixy pixy;
 Claw claw;
 Servo servo;
+UltraSonicSensor ultraSonic;
 
 int timer = 1000;
 const uint8_t frames = 25;
@@ -20,6 +23,7 @@ void setup() {
   pixy.init();
   claw.initClaw();
   claw.testClaw(Claw::OPEN);
+  ultraSonic.init(10);
 
   Serial.println("Start detection... \n");
 }
