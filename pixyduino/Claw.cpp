@@ -12,7 +12,8 @@
 
 //		servoContinuous.begin(10);
 		servoRotational.attach(9);
-//		servoRotational
+		servoRotational.write(open);
+
 		
 	}
 
@@ -103,8 +104,24 @@
 		if (servoRotational.attached())
 		{
 			Serial.println("You should have fucking opened the claw");
-			delay(2000);
-//			servoRotational.write(0);
+			int count = 0;
+			while (true)
+			{
+				count++;
+				servoRotational.write(180);
+				delay(1000);
+				servoRotational.write(3);
+				delay(1000);
+				servoRotational.write(3);
+
+				if (count == 2)
+				{
+					break;
+				}
+
+			}
+			//delay(2000);
+			//servoRotational.write(-90);
 
 		}
 //		for (int i = 0; i < 100; i++)

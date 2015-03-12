@@ -21,6 +21,12 @@ class Claw
 			pin2 = 2,
 			pin9 = 9
 		};
+
+		enum Position
+		{
+			open = 3, //0 degrees uses .2A without load, set to 3 degrees to avoid this
+			closed = 180
+		};
 		
 	 public:
 		 enum State {
