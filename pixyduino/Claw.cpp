@@ -112,7 +112,7 @@
 				delay(1000);
 				servoRotational.write(3);
 				delay(1000);
-				servoRotational.write(3);
+				servoRotational.write(open);
 
 				if (count == 2)
 				{
