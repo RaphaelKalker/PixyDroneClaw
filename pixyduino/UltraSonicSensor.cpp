@@ -10,6 +10,11 @@ void UltraSonicSensor::enableLog(boolean enableLoggingDistance) {
 	this->enableLogging = enableLoggingDistance;
 }
 
+boolean UltraSonicSensor::isAboveGround()
+{
+	return getDistance() < 10;
+}
+
 
 long UltraSonicSensor::getDistance() {
 	pinMode(TRIG, OUTPUT);

@@ -52,7 +52,8 @@ void loop() {
 				pixy.blocks[j].print();
 
 				//confirm target based on some thresholds
-				if (Detection::isObjectInRange(pixy.blocks[j])) {
+				if (Detection::isObjectCentered(pixy.blocks[j]) 
+					&& ultraSonic.isAboveGround()) {
 					Serial.println("Object is in range");
 					claw.engage();
 					Serial.println("done");

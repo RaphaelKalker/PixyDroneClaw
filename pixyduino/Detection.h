@@ -30,7 +30,7 @@ class Detection {
 //	static Servo servo;
 
 	public:
-	static boolean isObjectInRange(Block block);
+	static boolean isObjectCentered(Block block);
 //	static void handlePixyBlocks();
 	static void handleBtnPressed(uint8_t btnPin);
 };

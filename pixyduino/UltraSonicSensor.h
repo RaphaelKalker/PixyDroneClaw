@@ -29,6 +29,7 @@ class UltraSonicSensor {
 	void enableLog(boolean enableLoggingDistance);
 	long getDistance();
 	void printDistance();
+	boolean isAboveGround();
 };
 
 
