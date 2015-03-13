@@ -10,17 +10,25 @@
 #endif
 
 class UltraSonicSensor {
-	protected:
+	private:
 	long microsecondsToInches(long microseconds);
 	long microsecondsToCentimeters(long microseconds);
 	uint8_t pingPin;
+	enum PINS
+	{
+		VCC = 2,
+		TRIG = 3,
+		ECHO = 4,
+		GRD = 5
+	};
 	boolean enableLogging;
 
 
 	public:
-	void init(uint8_t pin);
+	void init();
 	void enableLog(boolean enableLoggingDistance);
 	long getDistance();
+	void printDistance();
 };
 
 

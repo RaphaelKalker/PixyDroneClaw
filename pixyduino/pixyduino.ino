@@ -18,57 +18,57 @@ uint16_t blocks;
 uint8_t len;
 
 void setup() {
-  Serial.begin(9600);
-  
-  pixy.init();
-  claw.initClaw();
-  claw.testClaw(Claw::OPEN);
-  ultraSonic.init(10);
+	Serial.begin(9600);
 
-  Serial.println("Start detection... \n");
+	pixy.init();
+	claw.initClaw();
+	claw.testClaw(Claw::OPEN);
+	ultraSonic.init();
+
+	Serial.println("Start detection... \n");
 }
 
 void loop() {
 
-  static int i = 0;
-  blocks = pixy.getBlocks();
-  len = sizeof(blocks);
-  char buf[32];
+	static int i = 0;
+	blocks = pixy.getBlocks();
+	len = sizeof(blocks);
+	char buf[32];
 
-  Detection::handleBtnPressed(2);
-//  Detection::handlePixyBlocks();
+	Detection::handleBtnPressed(2);
+	//  Detection::handlePixyBlocks();
+	ultraSonic.printDistance();
 
 
-  if (blocks && claw.isReady()) {
-    if (++i % frames == 0) {
-      sprintf(buf, "Detected %d objects: \n", blocks);
-      Serial.print(buf);
+	if (blocks && claw.isReady()) {
+		if (++i % frames == 0) {
+			sprintf(buf, "Detected %d objects: \n", blocks);
+			Serial.print(buf);
 
-      //Print Informations about detected objects
-      for (int j = 0; j < blocks; j++) {
-        sprintf(buf, " block %d: ", j);
-        Serial.print(buf);
-        pixy.blocks[j].print();
+			//Print Informations about detected objects
+			for (int j = 0; j < blocks; j++) {
+				sprintf(buf, " block %d: ", j);
+				Serial.print(buf);
+				pixy.blocks[j].print();
 
-        //confirm target based on some thresholds
-        if (Detection::isObjectInRange(pixy.blocks[j])) {
-			Serial.println("Object is in range");
-			claw.engage();
-			Serial.println("done");
-        }
-      }
-    }
-  }
-  else {
-	 
-	  
-  }
+				//confirm target based on some thresholds
+				if (Detection::isObjectInRange(pixy.blocks[j])) {
+					Serial.println("Object is in range");
+					claw.engage();
+					Serial.println("done");
+				}
+			}
+		}
+	} else {
 
-  /*
-  * get current block on screen and create a signature for comparison later
-  */
-  //TODO
-  }
+
+	}
+
+	/*
+	* get current block on screen and create a signature for comparison later
+	*/
+	//TODO
+}
 
 
 

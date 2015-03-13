@@ -1,35 +1,38 @@
 #include "Arduino.h"
 #include "UltraSonicSensor.h"
 
-void UltraSonicSensor::init(uint8_t pin) {
-	this->pingPin = pin;
-	
+void UltraSonicSensor::init() {
+	//	pinMode(VCC, OUTPUT);
+	//	pinMode(GRD, OUTPUT);
 }
 
-void UltraSonicSensor::enableLog(boolean enableLoggingDistance)
-{
+void UltraSonicSensor::enableLog(boolean enableLoggingDistance) {
 	this->enableLogging = enableLoggingDistance;
 }
 
 
 long UltraSonicSensor::getDistance() {
-	pinMode(pingPin, OUTPUT);
-	digitalWrite(pingPin, LOW);
+	pinMode(TRIG, OUTPUT);
+	digitalWrite(TRIG, LOW);
 	delayMicroseconds(2);
-	digitalWrite(pingPin, HIGH);
+	digitalWrite(TRIG, HIGH);
 	delayMicroseconds(5);
-	digitalWrite(pingPin, LOW);
-	pinMode(pingPin, INPUT);
+	digitalWrite(TRIG, LOW);
 
-	long distance = microsecondsToCentimeters(pulseIn(pingPin, HIGH));
+	pinMode(ECHO, INPUT);
+	long distance = microsecondsToCentimeters(pulseIn(ECHO, HIGH));
 
-	if (enableLogging) {
-		Serial.println(distance);
-	}
 	delay(100);
 	return distance;
 
 }
+
+void UltraSonicSensor::printDistance() {
+	Serial.print("\nDistance: ");
+	Serial.print(getDistance());
+	Serial.print("cm");
+}
+
 
 long UltraSonicSensor::microsecondsToInches(long microseconds) {
 	// According to Parallax's datasheet for the PING))), there are
