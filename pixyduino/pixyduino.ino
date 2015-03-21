@@ -23,6 +23,7 @@ void setup() {
 	pixy.init();
 	claw.initClaw();
 	claw.testClaw(Claw::OPEN);
+//	Detection::init();
 	ultraSonic.init();
 
 	Serial.println("Start detection... \n");
@@ -30,30 +31,37 @@ void setup() {
 
 void loop() {
 
+	if (Detection::handleBtnPressed(2)) {
+		//		claw.toggleClaw();
+	}
+
 	static int i = 0;
 	blocks = pixy.getBlocks();
 	len = sizeof(blocks);
 	char buf[32];
 
-	Detection::handleBtnPressed(2);
-	//  Detection::handlePixyBlocks();
-	ultraSonic.printDistance();
 
+
+	//  Detection::handlePixyBlocks();
+//	ultraSonic.printDistance();
 
 	if (blocks && claw.isReady()) {
 		if (++i % frames == 0) {
 			sprintf(buf, "Detected %d objects: \n", blocks);
 			Serial.print(buf);
 
-			//Print Informations about detected objects
 			for (int j = 0; j < blocks; j++) {
 				sprintf(buf, " block %d: ", j);
 				Serial.print(buf);
 				pixy.blocks[j].print();
 
-				//confirm target based on some thresholds
-				if (Detection::isObjectCentered(pixy.blocks[j]) 
-					&& ultraSonic.isAboveGround()) {
+				if (Detection::isObjectCentered(pixy.blocks[j]))
+				{
+					if (ultraSonic.isAboveGround())
+					{
+						
+					}
+
 					Serial.println("Object is in range");
 					claw.engage();
 					Serial.println("done");
@@ -64,11 +72,6 @@ void loop() {
 
 
 	}
-
-	/*
-	* get current block on screen and create a signature for comparison later
-	*/
-	//TODO
 }
 
 

@@ -21,6 +21,7 @@ class Detection {
 	static const uint8_t TARGET_X2 = 300;
 	static const uint8_t TARGET_Y1 = 100;
 	static const uint8_t TARGET_Y2 = 300;
+	Pixy pixy;
 //	static const int timer = 1000;
 //	static const uint8_t frames = 25;
 //	static uint16_t blocks;
@@ -32,7 +33,9 @@ class Detection {
 	public:
 	static boolean isObjectCentered(Block block);
 //	static void handlePixyBlocks();
-	static void handleBtnPressed(uint8_t btnPin);
+	static boolean handleBtnPressed(uint8_t btnPin);
+	void handlePixy();
+	static void init();
 };
 
 #endif

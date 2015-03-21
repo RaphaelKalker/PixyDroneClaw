@@ -54,7 +54,7 @@ boolean Detection::isObjectCentered(Block block) {
 //		}
 //	}
 //
-void Detection::handleBtnPressed(uint8_t btnPin) {
+boolean Detection::handleBtnPressed(uint8_t btnPin) {
 	if (digitalRead(btnPin) == HIGH) {
 		Serial.println("Pressed");
 	}

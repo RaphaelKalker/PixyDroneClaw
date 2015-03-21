@@ -74,14 +74,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Claw.h" />
+    <ClInclude Include="ContinuousRotationServo.h" />
+    <ClInclude Include="Detection.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="Feedback.h" />
     <ClInclude Include="Signature.h" />
-    <ClInclude Include="Test.h" />
+    <ClInclude Include="UltraSonicSensor.h" />
     <ClInclude Include="Visual Micro\.pixyduino.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Claw.cpp" />
+    <ClCompile Include="ContinuousRotationServo.cpp" />
+    <ClCompile Include="Detection.cpp" />
+    <ClCompile Include="Feedback.cpp" />
     <ClCompile Include="Signature.cpp" />
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="UltraSonicSensor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="pixyduino.ino">
@@ -91,4 +99,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.upload.port="COM4" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

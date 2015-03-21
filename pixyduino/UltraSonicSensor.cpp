@@ -4,6 +4,7 @@
 void UltraSonicSensor::init() {
 	//	pinMode(VCC, OUTPUT);
 	//	pinMode(GRD, OUTPUT);
+	//pinMode(TRIG, OUTPUT);
 }
 
 void UltraSonicSensor::enableLog(boolean enableLoggingDistance) {
@@ -17,7 +18,7 @@ boolean UltraSonicSensor::isAboveGround()
 
 
 long UltraSonicSensor::getDistance() {
-	pinMode(TRIG, OUTPUT);
+	
 	digitalWrite(TRIG, LOW);
 	delayMicroseconds(2);
 	digitalWrite(TRIG, HIGH);
@@ -25,9 +26,10 @@ long UltraSonicSensor::getDistance() {
 	digitalWrite(TRIG, LOW);
 
 	pinMode(ECHO, INPUT);
+	Serial.print(pulseIn(ECHO, HIGH));
 	long distance = microsecondsToCentimeters(pulseIn(ECHO, HIGH));
 
-	delay(100);
+	delay(10);
 	return distance;
 
 }
