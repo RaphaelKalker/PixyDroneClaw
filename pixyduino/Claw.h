@@ -15,6 +15,7 @@ class Claw {
 	double const VMIN = .40;
 	double const VMAX = 1.86;
 	boolean test = false;
+	uint8_t const MAX_ANGLE_READINGS = 5;
 
 	ContinuousRotationServo servoContinuous;
 	Servo servoRotational;
@@ -52,8 +53,9 @@ class Claw {
 	boolean closeClaw();
 	boolean isReady();
 	void testClaw(State desiredState);
-	float readAngle(uint16_t inputAngle);
+	uint16_t readAngle(uint16_t inputAngle);
 	void calibrateVoltageToAngle(uint16_t inputAngle);
+	void calibrate();
 	void toggleClaw();
 
 };

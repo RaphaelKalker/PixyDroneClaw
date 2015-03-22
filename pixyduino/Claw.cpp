@@ -10,6 +10,9 @@ void Claw::initClaw() {
 	Serial.println("Initializing Claw!");
 	servoRotational.attach(9);
 	openClaw();
+	delay(3000);
+	//testClaw(OPEN);
+//	calibrate();
 }
 
 Claw::State Claw::getState() {
@@ -50,17 +53,19 @@ boolean Claw::openClaw() {
 	setState(OPENING);
 	servoRotational.write(open);
 	setState(OPEN);
+	delay(1000);
+	Serial.println("OPEN");
 	return true;
 }
 
 boolean Claw::closeClaw() {
-//	
-//	Serial.println("Closing claw...");
-//	setState(CLOSING);
-//	servoRotational.write(closed);
-//	setState(CLOSING);
-//	readAngle();
-//	return true;
+	
+	Serial.println("Closing claw...");
+	setState(CLOSING);
+	servoRotational.write(closed);
+	setState(CLOSED);
+	Serial.println("CLOSED");
+	return true;
 }
 
 unsigned long Claw::mapAngleDelay(uint8_t angle)
@@ -70,13 +75,13 @@ unsigned long Claw::mapAngleDelay(uint8_t angle)
 }
 
 float Claw::closeClaw(uint8_t desiredAngle) {
-	Serial.println("Closing claw...");
+	
 
 	/* 
 	* Simple close command, no need for feedback
 	* This can be used for the override button
 	*/
-	if (desiredAngle != -1) {
+	if (desiredAngle == -1) {
 		
 		desiredAngle = closed;
 //		servo.write(desiredAngle);
@@ -90,33 +95,74 @@ float Claw::closeClaw(uint8_t desiredAngle) {
 	* If there is no change after a few readings we can assume that claw has attached 
 	* itself on an object.
 	*/
-
-	
 	setState(CLOSING);
 	uint8_t angle1 = 0;
 	uint8_t angle2 = 0;
 	long elapsedTime = 0;
+	Serial.print("\nClosing claw with angle: ");
+	Serial.print(desiredAngle);
 	servoRotational.write(desiredAngle);
 	
-	while (true)
+	int count = 1;
+	uint8_t diff = 0;
+	uint8_t sums = 0;
+	int samples = 0;
+	while (count++ < 6)
 	{
-		angle1 = readAngle(-1);
-		delay(20);
-		angle2 = readAngle(-1);
+		angle1 = readAngle(desiredAngle);
+		delay(1000);
+		angle2 = readAngle(desiredAngle);
 		Serial.print("\nDifference in angle: ");
-		Serial.print(angle1 - angle2);
+		diff = abs(angle1 - angle2);
+		Serial.print(diff);
+		Serial.print("\n Correct Angle: ");
+		Serial.print(angle1);
 
-		if (angle1 == angle2)
+		//only consider differences less than 5
+		if (diff < 5)
 		{
-			servoRotational.write(angle1);
-			setState(CLOSED);
-			return angle1;
+			
+			samples++;
+			sums+= diff;
+//			Serial.print("\nSamples: ");
+//			Serial.print(samples);
 		}
-		else if (elapsedTime > MAX_ROTATION_TIME)
-		{
-			Serial.println("elapsed time has reached threshold");
-		}
+		
+//
+//		if (angle1 == angle2)
+//		{
+//			servoRotational.write(angle1);
+//			setState(CLOSED);
+//			return angle1;
+//		}
+//		else if (elapsedTime > MAX_ROTATION_TIME)
+//		{
+//			Serial.println("elapsed time has reached threshold");
+//		}
 	}
+	Serial.print("\nSamples: ");
+	Serial.print(samples);
+	Serial.print("\nSums: ");
+	Serial.print(sums);
+	if (samples < 1)
+	{
+		//no samples taken, avoid dividing by zero.
+	} 
+	else
+	{
+		Serial.print("\n Offset was found to be: ");
+		Serial.print(sums/samples);
+		Serial.print("\n Correct Angle: ");
+		Serial.print(angle1);
+		int OFFSET = 25; //THERE IS SOME OFFSET SHIT GOING ON HERE
+		servoRotational.write(angle1 - OFFSET);
+
+	}
+	setState(CLOSED);
+	delay(1000);
+	Serial.println("CLOSED");
+	return angle1;
+	
 }
 		
 
@@ -124,21 +170,21 @@ boolean Claw::isReady() {
 	return state == OPEN;
 }
 
-float Claw::readAngle(uint16_t inputAngle) {
+uint16_t Claw::readAngle(uint16_t inputAngle) {
 	//Curve fit polynomial function
 	
 	int sensorValue = analogRead(A0);
 	float voltage = sensorValue * (5 / 1023.0);
 	uint16_t angle = 113.6*voltage - 44.6;
-	Serial.print("Input Angle: ");
-	Serial.print(inputAngle);
-	Serial.print("\tFeedback: ");
-	Serial.print(voltage);
-	Serial.print("V");
-	Serial.print("\tAngle: ");
-	Serial.print(angle);
-	Serial.print("\n");
-	return voltage;
+//	Serial.print("Input Angle: ");
+//	Serial.print(inputAngle);
+//	Serial.print("\tFeedback: ");
+//	Serial.print(voltage);
+//	Serial.print("V");
+//	Serial.print("\tAngle: ");
+//	Serial.print(angle);
+//	Serial.print("\n");
+	return angle;
 }
 
 void Claw::calibrateVoltageToAngle(uint16_t inputAngle)
@@ -156,9 +202,44 @@ void Claw::calibrateVoltageToAngle(uint16_t inputAngle)
 	Serial.print("\n");
 }
 
+void Claw::calibrate()
+{
+		int a = open;
+		boolean up;
+		boolean down;
+		while (true)
+		{
+			delay(2000);
+			closeClaw(a);
+			delay(2000);
+			calibrateVoltageToAngle(a);
+			a += 5;
+	
+			if (a > 180)
+			{
+				break;
+				
+			}
+		}
+		a = 180;
+		while (true) {
+			delay(2000);
+			servoRotational.write(a);
+			delay(2000);
+			calibrateVoltageToAngle(a);
+			a -= 5;
+	
+			if (a < 0) {
+				break;
+	
+			}
+	
+		}
+}
+
 void Claw::toggleClaw() {
 	if (state == OPEN)
-		closeClaw(-1);
+		closeClaw();
 	else if (state == CLOSED)
 		openClaw();
 	else
@@ -168,98 +249,18 @@ void Claw::toggleClaw() {
 
 void Claw::testClaw(State desiredState) {
 	Serial.println("Testing Claw...");
-
-	/* Test open close*/
-//	for (int i = 0; i < 5; i++)
+	closeClaw(-1);
+//	int count = 100;
+//	while (true)
 //	{
-//		servoRotational.write(open);
-//		delay(4000);
-//		readAngle(open);
-//		servoRotational.write(closed);
-//		delay(4000);
-//		readAngle(closed);
-//	}
-
-	int a = open;
-	boolean up;
-	boolean down;
-	while (true)
-	{
-		delay(2000);
-		closeClaw(a);
-		delay(2000);
-		calibrateVoltageToAngle(a);
-		a += 5;
-
-		if (a > 180)
-		{
-			break;
-			
-		}
-	}
-	a = 180;
-	while (true) {
-		delay(2000);
-		servoRotational.write(a);
-		delay(2000);
-		calibrateVoltageToAngle(a);
-		a -= 5;
-
-		if (a < 0) {
-			break;
-
-		}
-
-	}
-
-
-//	servoRotational.write(0);
-//	delay(4000);
-//	readAngle();
-//	int degrees = 0;
-//	while (true) {
-//		Serial.print("\nWriting");
-//		Serial.print(degrees);
-//		Serial.print(" degrees.   ");
-//		servoRotational.write(degrees); //.4
-//
-//		delay(2000);
-//		readAngle();
-//
-//		degrees += 30;
-//		if (degrees > 180) {
-//			degrees = 0;
-//
+//		count++;
+//		delay(1000);
+//		readAngle(150);
+//		if (count > 150)
+//		{
+//			break;
 //		}
-//
 //	}
-	//		servoRotational.write(closed);
-	//		if (servoRotational.attached())
-	//		{
-	//			Serial.println("You should have fucking opened the claw");
-	//			int count = 0;
-	//			while (false)
-	//			{
-	//				count++;
-	//				servoRotational.write(180);
-	//				delay(1000);
-	//				servoRotational.write(3);
-	//				delay(1000);
-	//				servoRotational.write(open);
-	//				if (count == 10)
-	//				{
-	//					break;
-	//				}
-	//
-	//			}
-	//			//delay(2000);
-	//			//servoRotational.write(-90);
-	//
-	//		}
-	//		for (int i = 0; i < 100; i++)
-	//		{
-	//			servoContinuous.rotateLeft(i);
-	//			delay(20);
-	//		}
 
+	
 }

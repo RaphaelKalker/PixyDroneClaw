@@ -16,24 +16,36 @@ int timer = 1000;
 const uint8_t frames = 25;
 uint16_t blocks;
 uint8_t len;
+static uint8_t buttonHandleCounter = 0;
 
 void setup() {
 	Serial.begin(9600);
 
 	pixy.init();
 	claw.initClaw();
-	claw.testClaw(Claw::OPEN);
+	//claw.testClaw(Claw::OPEN);
 //	Detection::init();
 	ultraSonic.init();
 
 	Serial.println("Start detection... \n");
 }
 
+void handleButonPress(int pin)
+{
+	if (digitalRead(pin) == HIGH) {
+		if (++buttonHandleCounter == 1) {
+			claw.toggleClaw();
+			delay(500);
+		}
+	} else {
+		buttonHandleCounter = 0;
+	}
+}
+
 void loop() {
 
-	if (Detection::handleBtnPressed(2)) {
-		//		claw.toggleClaw();
-	}
+	//Toggle claw for button press
+	handleButonPress(2);
 
 	static int i = 0;
 	blocks = pixy.getBlocks();
