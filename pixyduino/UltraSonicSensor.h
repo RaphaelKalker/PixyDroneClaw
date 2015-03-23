@@ -16,7 +16,7 @@ class UltraSonicSensor {
 	uint8_t pingPin;
 	enum PINS
 	{
-		VCC = 2,
+		VCC = 6,
 		TRIG = 3,
 		ECHO = 4,
 		GRD = 5

@@ -2,9 +2,9 @@
 #include "UltraSonicSensor.h"
 
 void UltraSonicSensor::init() {
-	//	pinMode(VCC, OUTPUT);
-	//	pinMode(GRD, OUTPUT);
-	//pinMode(TRIG, OUTPUT);
+//	pinMode(VCC, OUTPUT);
+//	pinMode(GRD, OUTPUT);
+//	pinMode(TRIG, OUTPUT);
 }
 
 void UltraSonicSensor::enableLog(boolean enableLoggingDistance) {
@@ -13,21 +13,27 @@ void UltraSonicSensor::enableLog(boolean enableLoggingDistance) {
 
 boolean UltraSonicSensor::isAboveGround()
 {
-	return getDistance() < 10;
+	long distance = getDistance();
+	//auto true if distance is 0 as in sensor is screwed
+	return distance < 10 && distance > 0;
 }
 
 
 long UltraSonicSensor::getDistance() {
-	
-	digitalWrite(TRIG, LOW);
-	delayMicroseconds(2);
-	digitalWrite(TRIG, HIGH);
-	delayMicroseconds(5);
-	digitalWrite(TRIG, LOW);
+	long duration;
 
-	pinMode(ECHO, INPUT);
-	Serial.print(pulseIn(ECHO, HIGH));
-	long distance = microsecondsToCentimeters(pulseIn(ECHO, HIGH));
+	// The PING))) is triggered by a HIGH pulse of 2 or more microseconds.
+	// Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+	pinMode(3, OUTPUT);// attach pin 3 to Trig
+	digitalWrite(3, LOW);
+	delayMicroseconds(2);
+	digitalWrite(3, HIGH);
+	delayMicroseconds(5);
+	digitalWrite(3, LOW);
+
+	pinMode(4, INPUT);//attach pin 4 to Echo
+	duration = pulseIn(4, HIGH);
+	long distance = microsecondsToCentimeters(duration);
 
 	delay(10);
 	return distance;
@@ -37,6 +43,7 @@ long UltraSonicSensor::getDistance() {
 void UltraSonicSensor::printDistance() {
 	Serial.print("\nDistance: ");
 	Serial.print(getDistance());
+	delay(100);
 	Serial.print("cm");
 }
 
