@@ -26,9 +26,11 @@ class Claw {
 		pin9 = 9
 	};
 
+	// open and close are reversed due to orientation of motor
+	// closed is set to 3 instead of 0 to avoid excess current draw.
 	enum Position {
-		open = 3, //0 degrees uses .2A without load, set to 3 degrees to avoid this
-		closed = 180
+		open = 180,
+		closed = 3
 	};
 
 	unsigned long mapAngleDelay(uint8_t angle);
